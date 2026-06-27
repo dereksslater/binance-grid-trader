@@ -1,0 +1,7 @@
+# Pastas que devem ser ignoradas
+venv/
+__pycache__/
+
+# Arquivos que devem ser ignorados
+.env
+*.pyc
