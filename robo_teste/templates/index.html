@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="10">
+  <title>Robô SOL — Painel</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; padding:24px; }
+    .card { max-width:640px; margin:0 auto; background:#1e293b; border-radius:16px; padding:24px; }
+    h1 { font-size:20px; margin:0 0 4px; }
+    .sub { color:#94a3b8; font-size:13px; margin-bottom:20px; }
+    .grid { display:flex; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
+    .box { flex:1; min-width:140px; background:#0f172a; border-radius:12px; padding:16px; }
+    .box .label { color:#94a3b8; font-size:12px; }
+    .box .value { font-size:24px; font-weight:600; margin-top:4px; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { text-align:left; padding:10px; border-bottom:1px solid #334155; }
+    th { color:#94a3b8; font-weight:500; }
+    .comprado { color:#f59e0b; font-weight:600; }
+    .aguardando { color:#3b82f6; font-weight:600; }
+    .lucro-pos { color:#22c55e; }
+    .lucro-neg { color:#ef4444; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🤖 Robô de Grid — {{ symbol }}</h1>
+    <div class="sub">{{ status }} · atualizado às {{ atualizacao }}</div>
+
+    <div class="grid">
+      <div class="box">
+        <div class="label">Preço atual</div>
+        <div class="value">${{ "%.2f"|format(preco) }}</div>
+      </div>
+      <div class="box">
+        <div class="label">Lucro acumulado</div>
+        <div class="value {{ 'lucro-pos' if lucro >= 0 else 'lucro-neg' }}">${{ "%+.2f"|format(lucro) }}</div>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Nível</th><th>Compra</th><th>Venda</th><th>Status</th></tr>
+      {% for n in niveis %}
+      <tr>
+        <td>Nível {{ loop.index }}</td>
+        <td>${{ "%.2f"|format(n.compra) }}</td>
+        <td>${{ "%.2f"|format(n.venda) }}</td>
+        <td>
+          {% if n.status == 'AGUARDANDO_VENDA' %}
+            <span class="comprado">Comprado ({{ "%.4f"|format(n.qtd_sol) }} SOL)</span>
+          {% else %}
+            <span class="aguardando">Aguardando compra</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</body>
+</html>
